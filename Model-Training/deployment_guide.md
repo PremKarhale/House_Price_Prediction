@@ -2,8 +2,8 @@
 
 ## The Key Insight
 
-Your model needs 42 features, but the **user only provides ~13 simple inputs**. 
-Your backend **computes the other 29 features automatically**.
+Model needs 42 features, but the **user only provides ~13 simple inputs**. 
+My backend **computes the other 29 features automatically**.
 
 ---
 
@@ -27,8 +27,7 @@ Your backend **computes the other 29 features automatically**.
 | 12 | **Nearby** | Checkboxes | ☑ Metro ☑ Hospital ☐ School ☑ Mall ☐ Bank |
 | 13 | **Amenity Count** | Number/Slider | 8 |
 
-> [!TIP]
-> Ratings (Environment, Lifestyle, Connectivity, Safety) can either be asked from the user via sliders (1-10), or set to median defaults if you want to keep the form simpler.
+
 
 ### 🔵 Computed by Backend (29 features — user never sees these)
 
@@ -67,7 +66,7 @@ Your backend **computes the other 29 features automatically**.
 
 ---
 
-## 📦 What to Save from Training (artifacts needed for deployment)
+## What to Save from Training (artifacts needed for deployment)
 
 ```python
 import pickle
@@ -97,7 +96,7 @@ defaults = {
 }
 json.dump(defaults, open('defaults.json', 'w'))
 
-print("All artifacts saved ✅")
+print("All artifacts saved ")
 ```
 
 ---
@@ -252,55 +251,3 @@ if __name__ == '__main__':
 
 ---
 
-## 🎨 Streamlit App (Optional Frontend)
-
-```python
-# app.py
-import streamlit as st
-
-st.title("🏠 House Price Predictor")
-
-col1, col2 = st.columns(2)
-
-with col1:
-    location = st.selectbox("Location", list(loc_map.keys()))
-    area = st.number_input("Area (sq.ft)", 500, 10000, 1500)
-    bedrooms = st.slider("Bedrooms", 1, 10, 3)
-    bathrooms = st.slider("Bathrooms", 1, 8, 2)
-    balconies = st.slider("Balconies", 0, 3, 1)
-    floor_num = st.number_input("Floor", 0, 50, 3)
-
-with col2:
-    furnish = st.selectbox("Furnishing", ["Unfurnished", "Semi-furnished", "Furnished"])
-    age = st.selectbox("Age", list(AGE_MAP.keys()))
-    facing = st.selectbox("Facing", list(facing_map.keys()))
-    society = st.text_input("Society", "independent")
-    amenities = st.slider("Amenity Count", 0, 20, 5)
-
-st.subheader("Extra Rooms")
-c1, c2, c3, c4 = st.columns(4)
-servant = c1.checkbox("Servant")
-pooja = c2.checkbox("Pooja")
-study = c3.checkbox("Study")
-store = c4.checkbox("Store")
-
-st.subheader("Nearby")
-n1, n2, n3, n4, n5 = st.columns(5)
-metro = n1.checkbox("Metro")
-hospital = n2.checkbox("Hospital")
-school = n3.checkbox("School")
-mall = n4.checkbox("Mall")
-bank = n5.checkbox("Bank")
-
-if st.button("Predict Price 🏠"):
-    price = predict_price(
-        location, area, bedrooms, bathrooms, balconies, floor_num,
-        furnish, age, facing, society,
-        int(servant), int(pooja), int(study), int(store),
-        int(metro), int(hospital), int(school), int(mall), int(bank),
-        amenities
-    )
-    st.success(f"### Estimated Price: ₹{price:.2f} Lacs")
-```
-
-Run with: `streamlit run app.py`
