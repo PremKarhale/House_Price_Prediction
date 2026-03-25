@@ -232,17 +232,17 @@ function App() {
       <div className="steps-container">
         <div className="steps-bar">
           {[
-            { num: 1, label: 'Property Details' },
-            { num: 2, label: 'Specifications' },
-            { num: 3, label: 'Amenities & Extras' },
-          ].map(({ num, label }) => (
+            { num: 1, label: 'Property Details', isDone: canProceedStep1 },
+            { num: 2, label: 'Specifications', isDone: canProceedStep2 },
+            { num: 3, label: 'Amenities & Extras', isDone: !!result },
+          ].map(({ num, label, isDone }) => (
             <button
               key={num}
-              className={`step-item ${step === num ? 'active' : ''} ${step > num ? 'completed' : ''}`}
+            className={`step-item ${step === num ? 'active' : ''} ${isDone && step !== num ? 'completed' : ''}`}
               onClick={() => setStep(num)}
             >
               <div className="step-circle">
-                {step > num ? (
+              {isDone && step !== num ? (
                   <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
                     <polyline points="20,6 9,17 4,12" />
                   </svg>
